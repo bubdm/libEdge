@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;                      // StringBuilder
 using System.Runtime.InteropServices;   // DllImport
 
-namespace CS_Use_DLL
+namespace CS_libEdge
 {
     class CS_libEdge
     {
@@ -80,7 +80,7 @@ namespace CS_Use_DLL
                 allElements += jsResult + "\n";
             }
             MsgBox(allElements + "\n" + "Click to quit program");
-            return StopEdge();
+            return StopEdge();          // Stop Edge browswer and delete userDataFolder
         }
         ////////////////////////////////////////////////////////////////////////
         // Increase the size of our buffer if needed

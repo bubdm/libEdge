@@ -27,6 +27,6 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="Copy ..\$(PlatformName)\$(ConfigurationName)\libEdge.dll $(OutDir)&#xD;&#xA;Copy ..\$(PlatformName)\$(ConfigurationName)\WebView2Loader.dll $(OutDir)&#xD;&#xA;" />
+    <Exec Command="Copy ..\$(PlatformName)\$(ConfigurationName)\libEdge.dll $(OutDir)&#xD;&#xA;Copy ..\$(PlatformName)\$(ConfigurationName)\WebView2Loader.dll $(OutDir)&#xD;&#xA;" />
   </Target>
 </Project>
