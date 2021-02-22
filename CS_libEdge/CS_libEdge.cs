@@ -15,7 +15,7 @@ namespace CS_libEdge
         // NOTE: userDataFolder must exist and be writable. 
         //
         public static extern unsafe int StartEdge([MarshalAs(UnmanagedType.LPStr)] string userDataFolder = @"C:\Temp\", int xPos = 100, int yPos = 10, int width = 400, int height = 300, int timeOut = 5000);
-        [DllImport("libEdge.dll")] public static extern int StopEdge(int timeOut = 2000);
+        [DllImport("libEdge.dll")] public static extern int StopEdge(int deleteData = 0, int timeOut = 2000);
         [DllImport("libEdge.dll")] public static extern int Navigate([MarshalAs(UnmanagedType.LPStr)] string url, int timeOut = 5000);
         [DllImport("libEdge.dll")] public static extern int CS_RunJavascript([MarshalAs(UnmanagedType.LPStr)] string javascript, StringBuilder jsResult, int maxLen, int timeOut = 2000);
         [DllImport("libEdge.dll")] public static extern int MsgBox([MarshalAs(UnmanagedType.LPStr)] string message);
