@@ -45,7 +45,7 @@ int StartEdge(const char* userDataFolder = R"(C:\Temp\)", const int xPos = 100, 
 //
 // Stop the Edge thread
 //
-int StopEdge(const int timeOut = 2000);
+int StopEdge(const int deleteData, const int timeOut);
 //
 // The two main functions: Navigate to the page and then run javascript on it
 // ANSI (= Windows-1252 character set) functions. Codepage=1252
