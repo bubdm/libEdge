@@ -3,15 +3,19 @@
 // libEdge.h for C++, C# & VBA 
 //
 //
+// C# DLL to reassign & redimension a StringBuilder
+// char*& sb represents System.Text.StringBuilder, const char* newContent represents System.String
+extern "C" __declspec(dllimport) void CS_SizeUp(char *&sb, const char *newContent); 
+//
 // VBA only
-// Start the Edge thread. The userDataFolderRootPath folder must be writable. 
+// Start the Edge thread. The userDataFolder must be writable. 
 // A subfolder, EBWebView, will be created in the path
 //
 int __stdcall VBA_StartEdge(const char* userDataFolder = R"(C:\Temp\)", const int xPos = 100, const int yPos = 0, const int width = 1000, const int height = 1150, const int timeOut = 5000);
 //
 // Stop Edge and remove the userDataFolder
 //
-int __stdcall VBA_StopEdge(const int timeOut = 2000);
+int __stdcall VBA_StopEdge(short userDataFolder = 0, const int timeOut = 2000);
 //
 // Open a page
 //
@@ -19,7 +23,7 @@ int __stdcall VBA_Navigate(const char* url, const int timeOut = 5000);
 // 
 // Run Javascript on the loaded page
 //
-int __stdcall VBA_RunJavascript(const char* javascript, char* jsResult, const int maxLen, const int timeOut);
+int __stdcall VBA_RunJavascript(const char* javascript, char *jsResult, const int maxLen, const int timeOut);
 //
 // MessageBox
 //
@@ -31,9 +35,10 @@ HWND __stdcall VBA_Get_hWnd();
 //
 // C# only
 //
-int CS_RunJavascript(const char* javascript, char* jsResult, const int maxLen, const int timeOut);
+//int CS_RunJavascript(const char* javascript, char* jsResult, const int maxLen, const int timeOut);
+int CS_RunJavascript(const char* javascript, char *&jsResult, const int timeOut);
 //
-// C++, C#, VBA
+// C++, C#
 //
 HWND Get_hWnd(); 
 int MsgBox(const char* message);

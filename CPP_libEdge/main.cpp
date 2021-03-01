@@ -57,7 +57,7 @@ int main()
 	//
 	GetCurrentDirectory(sizeof(txtBuf), txtBuf);
 	strcat(txtBuf, "\\DemoPage.html");
-	result = Navigate(txtBuf); // Replace with the desired URL -> Navigate("https://example.com");
+	result = Navigate(txtBuf); // Desired URL -> Navigate("https://example.com");
 	if (result)
 		return result;
 	//
