@@ -17,7 +17,8 @@ namespace CS_libEdge
         public static extern unsafe int StartEdge([MarshalAs(UnmanagedType.LPStr)] string userDataFolder = @"C:\Temp\", int xPos = 100, int yPos = 10, int width = 400, int height = 300, int timeOut = 5000);
         [DllImport("libEdge.dll")] public static extern int StopEdge(bool deleteData = false, int timeOut = 2000);
         [DllImport("libEdge.dll")] public static extern int Navigate([MarshalAs(UnmanagedType.LPStr)] string url, int timeOut = 5000);
-        [DllImport("libEdge.dll")] public static extern int CS_RunJavascript([MarshalAs(UnmanagedType.LPStr)] string javascript, StringBuilder jsResult, int maxLen, int timeOut = 2000);
+//        [DllImport("libEdge.dll")] public static extern int CS_RunJavascript([MarshalAs(UnmanagedType.LPStr)] string javascript, StringBuilder jsResult, int maxLen, int timeOut = 2000);
+        [DllImport("libEdge.dll")] public static extern int CS_RunJavascript([MarshalAs(UnmanagedType.LPStr)] string javascript, ref StringBuilder jsResult, int timeOut = 2000);
         [DllImport("libEdge.dll")] public static extern int MsgBox([MarshalAs(UnmanagedType.LPStr)] string message);
         [DllImport("libEdge.dll")] public static extern int Get_hWnd();
         //
@@ -30,7 +31,7 @@ namespace CS_libEdge
         const string DEMOPAGE = @"\DemoPage.html";
         static int Main(string[] args)
         {
-            int result, size, count, elementIndex;
+            int result, count, elementIndex;
             string js;
             string allElements;
             string binDir, projDir;
@@ -50,7 +51,7 @@ namespace CS_libEdge
             }
             string demoPage = projDir + DEMOPAGE;
 
-            result = Navigate(demoPage); // Change to desired URL, Navigate("https://example.com");
+            result = Navigate(demoPage); // Desired URL, Navigate("https://example.com");
             if (result != 0)        
             {
                 MsgBox("Error " + result + ", navigating to page " + demoPage);
@@ -60,36 +61,21 @@ namespace CS_libEdge
             // Access the DOM by applying javascript
             //
             js = JS_SETVAR;                                 // Create myClassElements
-            size = CS_RunJavascript(js, null, 0);           // Get required buffer size
-            SizeUp(size, ref jsResult);                     // Increase if needed
-            result = CS_RunJavascript(js, jsResult, size);  // Set var myClassElements in the DOM
+            result = CS_RunJavascript(js, ref jsResult);    // Set var myClassElements in the DOM
 
             js = JS_GETCOUNT;                               // Get number of elements
-            size = CS_RunJavascript(js, null, 0);           // Get required buffer size
-            SizeUp(size, ref jsResult);
-            result = CS_RunJavascript(js, jsResult, size);  // Count in jsResult
+            result = CS_RunJavascript(js, ref jsResult);    // Count in jsResult
             count = Int32.Parse(jsResult.ToString());
 
             allElements = "";
             for (elementIndex = 0; elementIndex < count; elementIndex++)
             {
                 js = string.Format(JS_GETELEMENT, elementIndex);
-                size = CS_RunJavascript(js, null, 0);         // Size request
-                SizeUp(size, ref jsResult); 
-                result = CS_RunJavascript(js, jsResult, size); // Get this element
+                result = CS_RunJavascript(js, ref jsResult); // Get this element
                 allElements += jsResult + "\n";
             }
             MsgBox(allElements + "\n" + "Click to quit program");
-            return StopEdge(true);          // Stop Edge browswer and delete userDataFolder
-        }
-        ////////////////////////////////////////////////////////////////////////
-        // Increase the size of our buffer if needed
-        //
-        static void SizeUp(int reqSize, ref StringBuilder jsResult)
-        {
-            if (reqSize > jsResult.Capacity)
-                jsResult.Capacity = reqSize;
-            jsResult.Length = reqSize;          // Exact length
+            return StopEdge(true);          // Stop Edge browswer and delete userDataFolder (cookies)
         }
     }
 }
