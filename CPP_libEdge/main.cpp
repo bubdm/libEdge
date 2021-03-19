@@ -19,6 +19,7 @@ using namespace std;
 #pragma comment(lib, R"(..\x86\Release\libEdge.lib)")
 #endif
 #endif
+const char* CAPTION = "Edge is running";
 //
 // Javascript used in this demo
 //
@@ -36,8 +37,8 @@ const char* JS_GETELEMENT = "myClassElements[%d].innerHTML;";								 // Content
 int main()
 {
 	HWND hWnd;
-	int result, count, elementIndex;
-	string jsResult, allResult;
+	int result, elementCount, elementIndex;
+	string jsResult, allResults;
 	char txtBuf[_MAX_PATH];
 
 	result = StartEdge();	// Start Edge browser
@@ -48,9 +49,9 @@ int main()
 		return result;
 	}
 	hWnd = Get_hWnd();	// Handle to Edge window
-	MessageBox(NULL, "Click to hide window", "Edge is running", MB_SYSTEMMODAL);
+	MessageBox(NULL, "Click to hide window", CAPTION, MB_SYSTEMMODAL);
 	result = ShowWindow(hWnd, SW_HIDE); 
-	MessageBox(NULL, "Click to show window", "Edge is running", MB_SYSTEMMODAL);
+	MessageBox(NULL, "Click to show window", CAPTION, MB_SYSTEMMODAL);
 	result = ShowWindow(hWnd, SW_SHOW);
 	//
 	// Use local file for demo
@@ -59,7 +60,7 @@ int main()
 	strcat(txtBuf, "\\DemoPage.html");
 	result = Navigate(txtBuf); // Desired URL -> Navigate("https://example.com");
 	if (result)
-		return result;
+		return result; // Error
 	//
 	// Access the DOM by applying javascript
 	//
@@ -67,17 +68,17 @@ int main()
 	if (result)
 		return result;
 	result = RunJavascript(JS_GETCOUNT, jsResult); // Get number of elements
-	count = stoi(jsResult);
-	for (elementIndex = 0; elementIndex < count; elementIndex++)
+	elementCount = stoi(jsResult);
+	for (elementIndex = 0; elementIndex < elementCount; elementIndex++)
 	{
 		sprintf(txtBuf, JS_GETELEMENT, elementIndex);
 		result = RunJavascript(txtBuf, jsResult); // Get this element
-		allResult += jsResult + "\n";
+		allResults += jsResult + "\n";
 	}
-	allResult += "\nClick to stop\n";
+	allResults += "\nClick to stop\n";
 	//
 	// Show result. Exit Edge 
 	//
-	MessageBox(NULL, allResult.c_str(), "Edge is running", MB_SYSTEMMODAL);
+	MessageBox(NULL, allResults.c_str(), CAPTION, MB_SYSTEMMODAL);
 	return StopEdge();
 }

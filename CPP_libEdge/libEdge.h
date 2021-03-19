@@ -1,62 +1,25 @@
 #pragma once
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// libEdge.h for C++, C# & VBA 
-//
-// VBA only
-// Start the Edge thread. The userDataFolder must be writable. 
-// A subfolder, EBWebView, will be created in the path
-//
-int __stdcall VBA_StartEdge(const char* userDataFolder = R"(C:\Temp\)", const int xPos = 100, const int yPos = 0, const int width = 1000, const int height = 1150, const int timeOut = 5000);
-//
-// Stop Edge and optionally remove the userDataFolder
-//
-int __stdcall VBA_StopEdge(short userDataFolder = 0, const int timeOut = 2000);
-//
-// Open a page
-//
-int __stdcall VBA_Navigate(const char* url, const int timeOut = 5000);
-// 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Run Javascript on the loaded page
-// BSTR jsresult is String jsResult on VBA side
-// https://stackoverflow.com/questions/39404028/passing-strings-from-vba-to-c-dll
-//
-int __stdcall VBA_RunJavascript(const char* javascript, BSTR& jsResult, const int timeOut);
-//
-// MessageBox
-//
-int __stdcall VBA_MsgBox(const char* message);
-//
-// Get handle to the Edge window
-//
-HWND __stdcall VBA_Get_hWnd();
-//
-// C# only
-// Callback to resize jsResult
-//
-int CS_RunJavascript(const char* javascript, char *&jsResult, void (*SizeUp) (const char* s, char*& sb), const int timeOut);
-//
-// C++, C#
-//
-HWND Get_hWnd(); 
-int MsgBox(const char* message);
+// libEdge.h
 //
 // Start the Edge thread
-// userDataFolder must exist and be writable
+// userDataFolderPath must exist and be writable
 //
-int StartEdge(const char* userDataFolder = R"(C:\Temp\)", const int xPos = 100, const int yPos = 0, const int width = 300, const int height = 400, const int timeOut = 5000);
+int StartEdge(const char* userDataFolderPath = R"(C:\Temp\)", const int xPos = 100, const int yPos = 0, const int width = 300, const int height = 400, const int timeOut = 5000);
 //
 // Stop the Edge thread
 //
 int StopEdge(const bool deleteData = false, const int timeOut = 2000);
 //
 // The two main functions: Navigate to the page and then run javascript on it
-// ANSI (= Windows-1252 character set) functions. Codepage=1252
+// ANSI (= Windows-1252 character set) functions
 //
 int Navigate(const char* url, const int timeOut = 5000);
 int RunJavascript(const char* javascript, string& jsResult, const int timeOut = 2000);
+int MsgBox(const char* message);
+HWND Get_hWnd();
 //
-// Wide char equivalent functions. CodePage = CP_UTF8
+// Wide char (Unicode, 16-bits) equivalent functions
 //
 int NavigateW(const wchar_t* wUrl, const int timeOut = 5000);
 int RunJavascriptW(const wchar_t* wJavascript, wstring& wJsResult, const int timeOut = 2000);
